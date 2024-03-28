@@ -5,10 +5,11 @@ from openapi_client import ApiException
 
 app = Flask(__name__)
 
-config = Configuration(host="http://localhost:8080/api")
-# config = Configuration(host="http://rest-api-server:8080/api")
+# config = Configuration(host="http://localhost:8080/api")
+config = Configuration(host="http://192.168.1.3:8080/api")
 api_client = ApiClient(configuration=config)
 default_api = DefaultApi(api_client=api_client)
+
 
 @app.route('/')
 def home():
@@ -17,6 +18,7 @@ def home():
         return render_template('home.html', users=users)
     except ApiException as e:
         return jsonify(error=str(e)), 500
+
 
 @app.route('/api/users', methods=['POST'])
 def create_user():
@@ -27,6 +29,7 @@ def create_user():
     except ApiException as e:
         return jsonify(error=str(e)), 500
 
+
 @app.route('/api/users', methods=['GET'])
 def get_users():
     try:
@@ -35,6 +38,7 @@ def get_users():
     except ApiException as e:
         return jsonify(error=str(e)), 500
 
+
 @app.route('/api/users/<user_id>', methods=['GET'])
 def get_user(user_id):
     try:
@@ -42,6 +46,7 @@ def get_user(user_id):
         return jsonify(user.to_dict()), 200
     except ApiException as e:
         return jsonify(error=str(e)), 500
+
 
 @app.route('/api/users/<user_id>', methods=['PUT'])
 def update_user(user_id):
@@ -52,6 +57,7 @@ def update_user(user_id):
     except ApiException as e:
         return jsonify(error=str(e)), 500
 
+
 @app.route('/api/users/<user_id>', methods=['DELETE'])
 def delete_user(user_id):
     try:
@@ -59,6 +65,7 @@ def delete_user(user_id):
         return '', 204
     except ApiException as e:
         return jsonify(error=str(e)), 500
+
 
 if __name__ == '__main__':
     app.run(debug=True)
