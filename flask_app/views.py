@@ -1,12 +1,18 @@
 from flask import Flask, render_template, request, jsonify
-from openapi_client import Configuration, ApiClient
+from openapi_client import Configuration, ApiClient, ApiException
 from openapi_client.api import DefaultApi
-from openapi_client import ApiException
 
 app = Flask(__name__)
 
+# Running without Docker
 # config = Configuration(host="http://localhost:8080/api")
-config = Configuration(host="http://192.168.1.3:8080/api")
+
+# Running without Docker OR with \Dockerfile (see \README.md)
+# config = Configuration(host="http://192.168.1.3:8080/api")
+
+# Running with ..\Dockerfile.web-client (../setup.sh) - This is the one that should be committed to the git repo!
+config = Configuration(host="http://rest-api-server:8080/api")
+
 api_client = ApiClient(configuration=config)
 default_api = DefaultApi(api_client=api_client)
 
